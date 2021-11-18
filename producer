@@ -1,0 +1,54 @@
+
+import kafka
+import json
+import tweepy
+from kafka import KafkaProducer
+from tweepy import OAuthHandler
+from tweepy import Stream
+from tweepy.streaming import StreamListener
+
+# TWITTER API CONFIGURATIONS
+consumer_key = "PaTejXKfRCGvZknZgzM4p3gEb"
+consumer_secret = "IRqa3pZEtOPejZoXBIWNTtzrNchP1N6qHFEQLAdTw5FKFjBrcR"
+# access_token = "AAAAAAAAAAAAAAAAAAAAAJ6QVgEAAAAA3wJ5NuhQEkBQcRnf8trQ
+# gMP5KIc%3D9NFmkwg2lIc1kJBjxepdkDv0EPWeuX0qnXRwB19fbAGTrPpfpC"
+access_token = "1271942406431096832-qEPNYpDTCpDPK6eZr8gKJMGO3VdbuK"
+access_secret = "Qzzr5Oc3IqwvJnHRnuhEdBPYod8BTbxFVM8nuiKQFfgvS"
+
+hashtag = input("Enter the hashtag : ")
+
+# TWITTER API AUTH
+auth = OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_secret)
+
+api = tweepy.API(auth)
+
+
+# Twitter Stream Listener
+class KafkaPushListener(StreamListener):
+    def __init__(self):
+        # localhost:9092 = Default Zookeeper Producer Host and Port Adresses
+        self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
+
+    # Get Producer that has topic name is Twitter
+    # self.producer = self.client.topics[bytes("twitter")].get_producer()
+
+    def on_data(self, data):
+        # Producer produces data for consumer
+        # Data comes from Twitter
+        self.producer.send("twitter_stream_" + hashtag, data.encode('utf-8'))
+        print(data)
+        return True
+
+    def on_error(self, status):
+        print(status)
+        return True
+
+
+# Twitter Stream Config
+twitter_stream = Stream(auth, KafkaPushListener())
+
+hashStr = "#" + hashtag
+
+# Produce Data that has trump hashtag (Tweets)
+twitter_stream.filter(track=[hashStr])
