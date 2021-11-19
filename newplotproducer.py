@@ -40,13 +40,6 @@ def make_plot(counts):
 
 
 def load_wordlist(filename):
-   """ 
-    This function should return a list or set of words from the given filename.
-    """
-    # YOUR CODE HERE
-    #words = sc.textFile(filename)
-    #wordlist = words.flatMap(lambda x:x.encode('utf-8').split('\n'))
-    #return wordlist.collect()
     words = {}
     f = open(filename,'rU')
     text = f.read()
