@@ -1,0 +1,22 @@
+/home/zy/Downloads/kafka_2.13-3.0.0
+$ bin/kafka-server-start.sh config/server.properties
+$ bin/zookeeper-server-start.sh config/zookeeper.properties
+
+
+
+create topic
+#bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
+bin/kafka-topics.sh --create --topic twitterstream --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
+check topic
+bin/kafka-topics.sh --describe --topic twitterstream --bootstrap-server localhost:9092
+
+
+/home/zy/Downloads/Twitter-Sentiment-Analysis-master
+
+
+new terminal
+/home/zy/Downloads/kafka_2.13-3.0.0
+check if data load on the kafka
+bin/kafka-console-consumer.sh topic twitterstream --from-beginning --bootstrap-server localhost:9092
+
+$SPARK_HOME/bin/spark-submit --packages org.apache.spark:spark-streaming-kafka_2.10:1.5.1 twitterStream.py
