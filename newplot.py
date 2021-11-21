@@ -73,7 +73,7 @@ sentiments_pd = pd.DataFrame.from_dict(sentiments)
 #Save as a CSV file
 
 sentiments_pd.to_csv("/home/zy/Sentiments.csv")
-df = pd.read_csv("Movies_Dataset.csv")
+df = pd.read_csv("/home/zy/Sentiments.csv")
 
 df.head()
 
@@ -81,7 +81,7 @@ df.head()
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 
-documents = df['overview'].values.astype("U")
+documents = df['text'].values.astype("U")
 
 vectorizer = TfidfVectorizer(stop_words='english')
 features = vectorizer.fit_transform(documents)
