@@ -7,12 +7,6 @@ es = Elasticsearch(hosts=['localhost'], port=9200)
 
 
 def main():
-    """
-    main function initiates a kafka consumer, initialize the tweet database.
-    Consumer consumes tweets from producer extracts features, cleanses the tweet text,
-    calculates sentiments and loads the data into postgres database
-    """
-
     hashtag = input("Enter the hashtag : ")
     # set-up a Kafka consumer
     consumer = KafkaConsumer("twitter_stream_" + hashtag, auto_offset_reset='earliest')
