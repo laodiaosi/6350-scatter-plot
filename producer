@@ -29,10 +29,6 @@ class KafkaPushListener(StreamListener):
     def __init__(self):
         # localhost:9092 = Default Zookeeper Producer Host and Port Adresses
         self.producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
-
-    # Get Producer that has topic name is Twitter
-    # self.producer = self.client.topics[bytes("twitter")].get_producer()
-
     def on_data(self, data):
         # Producer produces data for consumer
         # Data comes from Twitter
